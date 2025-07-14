@@ -1,4 +1,4 @@
-package com.target
+package com.fabricyo.target
 
 import android.app.Application
 import android.content.res.Configuration
