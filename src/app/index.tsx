@@ -10,7 +10,7 @@ export default function Index() {
 
             <Button
                   title='Target'
-                  onPress={() => router.back()}
+                  onPress={() => router.navigate("target")}
                   />
         </View>
     )
