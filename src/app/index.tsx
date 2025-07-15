@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
+import { router } from "expo-router";
 
 export default function Index() {
     return(
@@ -6,6 +7,11 @@ export default function Index() {
             <Text>
                 Hello world
             </Text>
+
+            <Button
+                  title='Target'
+                  onPress={() => router.back()}
+                  />
         </View>
     )
 }
