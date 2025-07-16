@@ -1,16 +1,21 @@
 import {LinearGradient} from "expo-linear-gradient" 
 
 import { styles } from "./styles"
-import { colors } from "@/theme/colors"
 import { Text, View } from "react-native"
+
+import { colors } from "@/theme/colors"
 import { Separator } from "../Separator"
+import { Summary, SummaryProps } from "../Summary"
 
 export type homeHeaderProps ={
-     total: string
+     total: string,
+     input: SummaryProps,
+     output: SummaryProps
 }
 
 type props ={
     data: homeHeaderProps
+    
 }
 
 export function HomeHeader({data}: props){
@@ -30,6 +35,19 @@ export function HomeHeader({data}: props){
             <Separator
                 color={colors.blue[400]}
                 />
+
+                <View style={styles.summary}>
+                    <Summary
+                    data={data.input}
+                    icon={{name: "arrow-upward", color: colors.green[500]}}
+                    />
+
+                    <Summary
+                    data={data.output}
+                    icon={{name: "arrow-downward", color: colors.red[400]}}
+                    isLeft
+                    />
+                </View>
         </LinearGradient>
 
     )
