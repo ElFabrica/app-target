@@ -1,8 +1,10 @@
 import { Text, View, Button } from "react-native";
+import { router } from "expo-router";
 
 import { List } from "@/componentes/List";
 import { HomeHeader } from "@/componentes/HomeHeader";
 import { Target } from "@/componentes/Target";
+import { Buttom } from "@/componentes/Buttom";
 
 export default function Index() {
 
@@ -30,12 +32,19 @@ export default function Index() {
             
             <List
             data={targets}
-            renderItem={({item}) => <Target data={item}/> }
+            renderItem={({item}) => <Target data={item} onPress={()=> router.navigate(`/in-progress/${item.id}`)} /> }
             keyExtractor={(item) => item.id}
             title="Metas"
             emptyMessage="Nenhuma meta. Toque em nova meta para adicionar"
             containerStyle={{paddingHorizontal: 24}}
             />
+
+                <View style={{padding:24, paddingBottom:32}}>
+            <Buttom
+            title="Nova meta"
+            onPress={()=> router.navigate("/target")}
+            />
+            </View>
 
         </View>
     )
