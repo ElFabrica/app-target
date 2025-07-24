@@ -8,7 +8,7 @@ type props  = TouchableOpacityProps & {
         isProcessing?: boolean
 }
 
-export function Buttom ({title, isProcessing = false, ...rest}:props) {
+export function Button ({title, isProcessing = false, ...rest}:props) {
     return(
         <TouchableOpacity 
         style={styles.container}
