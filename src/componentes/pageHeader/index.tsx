@@ -22,10 +22,17 @@ return(
             <TouchableOpacity activeOpacity={0.8} onPress={() => router.back}>
                 <MaterialIcons name="arrow-back" size={32} color={colors.black}/>
             </TouchableOpacity>
+        
 
-        </View>
+            {rightButton && (
+                <TouchableOpacity onPress={rightButton.onpress}>
+                    <MaterialIcons name={rightButton.icon} size={24} color={colors.gray[500]}/>
+                </TouchableOpacity>
+
+            )}
+    </View>
         <Text style={styles.title}></Text>
-        {subtitle && <Text style={styles.subtitle}> {subtitle}</Text>}
+        {subtitle && <Text style={styles.subtitle}> {subtitle}</Text>}  
     </View>
 
 )
