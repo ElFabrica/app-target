@@ -16,7 +16,7 @@ export function Button ({title, isProcessing = false, ...rest}:props) {
          activeOpacity={0.8}
          disabled={isProcessing}
          >
-            <Text style={styles.title}><blockquote></blockquote>
+            <Text style={styles.title}>
                 {isProcessing ? (<ActivityIndicator size ="small" color={colors.white}/>) : (title)}
 
             </Text>
