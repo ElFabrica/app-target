@@ -23,12 +23,10 @@ return(
                 <MaterialIcons name="arrow-back" size={32} color={colors.black}/>
             </TouchableOpacity>
         
-
             {rightButton && (
                 <TouchableOpacity onPress={rightButton.onpress}>
                     <MaterialIcons name={rightButton.icon} size={24} color={colors.gray[500]}/>
                 </TouchableOpacity>
-
             )}
     </View>
         <Text style={styles.title}> {title}</Text>
