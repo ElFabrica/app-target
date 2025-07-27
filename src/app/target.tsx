@@ -19,7 +19,7 @@ export default function Target() {
           label='Nome da meta'/>
         </View>
     <CurrencyInput 
-    label='Valor alvo'
+    label='Valor alvo (R$)'
     value={0}
     />
       <Button title="Salvar" />
