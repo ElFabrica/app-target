@@ -3,7 +3,7 @@ import { fontFamily,colors } from "@/theme";
 
 export const styles = StyleSheet.create({
     container:{
-        color:colors.blue[500],
+        backgroundColor:colors.blue[500],
          height:48,
          width:"100%",
          borderRadius:8,

@@ -16,11 +16,13 @@ export function Progress({ data }:Props){
     return(
         <View style={styles.container}>
             <Text style={styles.label}>Valor Guardado</Text>
-            <View>
-                <Text>
+            <View style={styles.status}>
+                <Text style={styles.value}>
                     {data.current}
                     <Text style={styles.targer}> de {data.target}</Text>
                 </Text>
+
+                <Text style={styles.percentage}> {data.porcentage.toFixed(0)}%  </Text>
             </View>
 
             <View style={styles.progress}>

@@ -13,7 +13,7 @@ export function Input ({ label, ...rest }: Props){
             <Text style={styles.label}>
                 {label}
             </Text>
-            <TextInput styles={styles.input} placeholderTextColor={colors.gray[400]}  {...rest}>
+            <TextInput style={styles.input} placeholderTextColor={colors.gray[400]}  {...rest}>
 
             </TextInput>
         </View>

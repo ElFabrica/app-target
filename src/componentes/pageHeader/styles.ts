@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     },
     header:{
         flexDirection: "row",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems:"center",
         marginBottom: 32
     },

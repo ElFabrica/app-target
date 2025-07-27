@@ -19,7 +19,7 @@ export type TargetProps = {
 type Props = TouchableOpacityProps & {
     data: TargetProps
 }
-
+ 
 export function Target({ data, ...rest }: Props) {
     return (
         <TouchableOpacity style={styles.container}{...rest}>

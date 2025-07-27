@@ -6,7 +6,7 @@ import { HomeHeader } from "@/componentes/HomeHeader";
 import { Target } from "@/componentes/Target";
 import { Button } from "@/componentes/Button";
 
-export default function Index() {
+
 
     const Summary = {
         total: "R$ 2.680,00",
@@ -16,16 +16,26 @@ export default function Index() {
     }
     const targets = [
         {
-            id: "",
+            id: "1",
             current: "200",
             name: "O caba lá",
+            percentage: "10",
+            target: "10"
+        },
+        {
+            id: "2",
+            current: "400",
+            name: "O caba lá 2.0",
             percentage: "10",
             target: "10"
         }
     ]
 
+
+export default function Index() {
+
     return (
-        <View>
+        < View style={{ flex: 1, backgroundColor: "#fff" }}>
             <StatusBar 
             barStyle="light-content"
             />
@@ -35,8 +45,8 @@ export default function Index() {
             
             <List
             data={targets}
-            renderItem={({item}) => <Target data={item} onPress={()=> router.navigate(`/in-progress/${item.id}`)} /> }
             keyExtractor={(item) => item.id}
+            renderItem={({item}) => <Target data={item} onPress={()=> router.navigate(`/in-progress/${item.id}`)} /> }
             title="Metas"
             emptyMessage="Nenhuma meta. Toque em nova meta para adicionar"
             containerStyle={{paddingHorizontal: 24}}
@@ -46,6 +56,8 @@ export default function Index() {
             <Button
             title="Nova meta"
             onPress={()=> router.navigate("/target")}
+            isProcessing={false}
+            
             />
             </View>
 

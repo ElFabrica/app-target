@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, Stack } from "expo-router";
 import {
     useFonts,
     Inter_400Regular,
@@ -22,14 +22,17 @@ export default function Layout(){
 
     return (
     
-<Tabs>
-<Tabs.Screen
+
+<Stack>
+    
+<Stack.Screen
 name="index"
 options={{
-    title: "Home"
+    title: "Home",
+    
 }}
 />
-</Tabs>
+</Stack>
 
 )
 
