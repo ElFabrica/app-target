@@ -23,10 +23,11 @@ export default function Layout(){
     return (
     
 
-<Stack>
+<Stack >
     
 <Stack.Screen
 name="index"
+
 options={{
     title: "Home",
     

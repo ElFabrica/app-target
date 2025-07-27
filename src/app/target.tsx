@@ -10,19 +10,21 @@ import { CurrencyInput } from '@/componentes/CurrencyInput'
 
 export default function Target() {
   return (
-    <View style={{flex: 1, padding:24 }}>
+    <View style={{ flex: 1, padding: 24 }}>
       <PageHeader title='Meta' subtitle='Economize para alcançar sua meta financeira' />
 
-        <View style={{marginTop: 32, gap: 40}}>
-          <Input 
+      <View style={{ marginTop: 32, gap: 40 }}>
+        <Input
           placeholder='Ex: Viagem para praia, Apple Watch'
-          label='Nome da meta'/>
-        </View>
-    <CurrencyInput 
-    label='Valor alvo (R$)'
-    value={0}
-    />
-      <Button title="Salvar" />
+          label='Nome da meta' />
+        <CurrencyInput
+          label='Valor alvo (R$)'
+          value={0}
+
+        />
+        <Button title="Salvar" />
+      </View>
+
     </View>
   )
 }
