@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { Alert, View, } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 
-import { PageHeader } from '@/componentes/pageHeader'
+import { PageHeader } from '@/componentes/pageHeader' 
 import { Input } from '@/componentes/input'
 import { Button } from '@/componentes/Button'
 import { CurrencyInput } from '@/componentes/CurrencyInput'
 import { create } from 'domain'
+
+import { useTargetDatabase,  } from '@/database/useTargetDatabase'
 
 
 export default function Target() {
@@ -17,6 +19,7 @@ export default function Target() {
 
 
   const params = useLocalSearchParams<{id?:string}>()
+  const targetDatabase =  useTargetDatabase()
 
   function handleSave() {
     if(!name.trim() || amount <= 0){
@@ -30,8 +33,9 @@ export default function Target() {
     }
   } 
 
-  async function create(  ) {
+  async function create() {
     try {
+      await targetDatabase.create({name, amount})
       Alert.alert("Nova meta", "Meta criada com sucesso", [
         {
           text: "ok",
