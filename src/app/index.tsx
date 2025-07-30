@@ -1,10 +1,13 @@
-import { Text, View, StatusBar } from "react-native";
-import { router } from "expo-router";
+import { useCallback } from "react";
+
+import { Text, View, StatusBar, Alert } from "react-native";
+import { router, useFocusEffect } from "expo-router";
 
 import { List } from "@/componentes/List";
 import { HomeHeader } from "@/componentes/HomeHeader";
 import { Target } from "@/componentes/Target";
 import { Button } from "@/componentes/Button";
+import { useTargetDatabase } from "@/database/useTargetDatabase";
 
 
 
@@ -33,6 +36,23 @@ import { Button } from "@/componentes/Button";
 
 
 export default function Index() {
+
+    const targetDatabase = useTargetDatabase()
+
+    async function fetchTargets(){
+        try {
+            const response = await targetDatabase.listBySavedValue()
+            console.log(response)
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível carregar as metas")
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {}, [])
+    )
+
 
     return (
         < View style={{ flex: 1, backgroundColor: "#fff" }}>
