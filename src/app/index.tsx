@@ -1,13 +1,15 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import { Text, View, StatusBar, Alert } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 
 import { List } from "@/componentes/List";
-import { HomeHeader } from "@/componentes/HomeHeader";
-import { Target } from "@/componentes/Target";
+import { Target, TargetProps } from "@/componentes/Target";
 import { Button } from "@/componentes/Button";
+import { HomeHeader } from "@/componentes/HomeHeader";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
+import { isLoaded } from "expo-font";
+import { Loading } from "@/componentes/Loading";
 
 
 
@@ -17,41 +19,47 @@ import { useTargetDatabase } from "@/database/useTargetDatabase";
         output: { label: "Saídas", value: "-R$ 883.65" },
         
     }
-    const targets = [
-        {
-            id: "1",
-            current: "200",
-            name: "O caba lá",
-            percentage: "10",
-            target: "10"
-        },
-        {
-            id: "2",
-            current: "400",
-            name: "O caba lá 2.0",
-            percentage: "10",
-            target: "10"
-        }
-    ]
-
 
 export default function Index() {
+    const [isFetching, setIsFetching] =  useState(true)
+    const [targets, setTarget] = useState<TargetProps[]>([]) 
 
     const targetDatabase = useTargetDatabase()
 
-    async function fetchTargets(){
+    async function fetchTargets():Promise<TargetProps[]>{
         try {
             const response = await targetDatabase.listBySavedValue()
-            console.log(response)
+            return response.map((item) =>({
+                id: String(item.id),
+                name: item.name,
+                current: String(item.current),
+                percentage: item.percentage.toFixed(0) + "%",
+                target: String(item.amount)
+            }))
         } catch (error) {
             Alert.alert("Erro", "Não foi possível carregar as metas")
             console.log(error)
         }
     }
 
+    async function fetchData() {
+        const targetDataPromise = fetchTargets()
+
+        const [TargetData] = await Promise.all([targetDataPromise])
+
+        setTarget(TargetData)
+
+        setIsFetching(false)
+    }
+
     useFocusEffect(
-        useCallback(() => {}, [])
+        useCallback(() => {
+            fetchData()
+        }, [])
     )
+    if (isFetching){
+        return <Loading/>
+    }
 
 
     return (

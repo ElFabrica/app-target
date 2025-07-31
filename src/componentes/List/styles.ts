@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
     messageEmpty:{
         fontSize:14,
         color:colors.gray[600],
-        fontFamily: fontFamily.regular
+        fontFamily: fontFamily.regular,
+        marginTop: 24
         
     }
 
