@@ -8,10 +8,9 @@ import { Target, TargetProps } from "@/componentes/Target";
 import { Button } from "@/componentes/Button";
 import { HomeHeader } from "@/componentes/HomeHeader";
 import { useTargetDatabase } from "@/database/useTargetDatabase";
-import { isLoaded } from "expo-font";
 import { Loading } from "@/componentes/Loading";
 
-
+import {numeberToCurrent} from "@/utils/numberToCurrent"
 
     const Summary = {
         total: "R$ 2.680,00",
@@ -32,9 +31,9 @@ export default function Index() {
             return response.map((item) =>({
                 id: String(item.id),
                 name: item.name,
-                current: String(item.current),
+                current: numeberToCurrent(item.current),
                 percentage: item.percentage.toFixed(0) + "%",
-                target: String(item.amount)
+                target: numeberToCurrent(item.amount)
             }))
         } catch (error) {
             Alert.alert("Erro", "Não foi possível carregar as metas")
