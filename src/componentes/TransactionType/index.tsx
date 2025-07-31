@@ -4,7 +4,7 @@ import { styles } from "./styles";
 import { colors } from "@/theme";
 
 import { Option } from "./option";
-import { TransactionTypes } from "@/urils/TransactionTypes";
+import { TransactionTypes } from "@/utils/TransactionTypes";
 
 type Props ={
     selected: TransactionTypes,

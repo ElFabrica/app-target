@@ -6,7 +6,6 @@ import { PageHeader } from '@/componentes/pageHeader'
 import { Input } from '@/componentes/input'
 import { Button } from '@/componentes/Button'
 import { CurrencyInput } from '@/componentes/CurrencyInput'
-import { create } from 'domain'
 
 import { useTargetDatabase,  } from '@/database/useTargetDatabase'
 
@@ -23,11 +22,18 @@ export default function Target() {
 
   function handleSave() {
     if(!name.trim() || amount <= 0){
-      Alert.alert("Atenção", "Preencha nome e valor precisa ser maior que zero.")
+      
+      return Alert.alert(
+        "Atenção",
+        "Preencha nome e valor precisa ser maior que zero."
+      )
+      
+      
     }
     setIsProcessing(true)
     if(params.id){
       //Update
+      
     }else{
       create()
     }
@@ -38,12 +44,15 @@ export default function Target() {
       await targetDatabase.create({name, amount})
       Alert.alert("Nova meta", "Meta criada com sucesso", [
         {
-          text: "ok",
+          text: "Ok",
           onPress:() => router.back() 
-        }
+        },
+        
       ])
+      
     } catch (error) {
-      Alert.alert("Errp", "Não foi possível criar a meta")
+      Alert.alert("Erro", "Não foi possível criar a meta")
+      setIsProcessing(false)
     }
   }
 
@@ -62,7 +71,6 @@ export default function Target() {
           label='Valor alvo (R$)'
           value={amount}
           onChangeValue={setAmount}
-
 
         />
         <Button title="Salvar" 

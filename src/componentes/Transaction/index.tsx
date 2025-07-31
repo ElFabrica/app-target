@@ -3,7 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import { colors } from "@/theme";
-import { TransactionTypes } from "@/urils/TransactionTypes";
+import { TransactionTypes } from "@/utils/TransactionTypes";
 
 export type TransactionProps = {
     id: string;

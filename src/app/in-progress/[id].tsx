@@ -6,7 +6,7 @@ import { List } from "@/componentes/List";
 import { Transaction,TransactionProps } from "@/componentes/Transaction";
 import { Button } from "@/componentes/Button";
 
-import { TransactionTypes } from "@/urils/TransactionTypes";
+import { TransactionTypes } from "@/utils/TransactionTypes";
 import { router, useLocalSearchParams } from "expo-router";
 
 const details =  {

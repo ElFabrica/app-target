@@ -17,8 +17,7 @@ export type TaragetResponse ={
 export function useTargetDatabase(){
     const database = useSQLiteContext()
     async function create(data: TargetCreate){
-        const statement = await database.prepareAsync("INSERT INTO targets (name, amount) VALUES ($name, $amount)"
-        )
+        const statement = await database.prepareAsync("INSERT INTO targets (name, amount) VALUES ($name, $amount)")
         statement.executeAsync({
             $name:  data.name,
             $amount: data.amount
@@ -29,8 +28,14 @@ export function useTargetDatabase(){
             SELECT
                 targets.id,
                 target.name,
-                targets.amount
+                targets.amount,
+                COALESCE (SUM (transactions.amount), 0) AS current,
+                COALESCE ((SUM (transactions.amount)/targets.amount)*100, 0) AS percentage
+
             FROM targets
+            LEFT JOIN transactions ON targets.id = transactions_target.id
+            GROUP BY targets.id, target.name, targets.amount
+            ORDER BY current DESC 
             
             `)
     }

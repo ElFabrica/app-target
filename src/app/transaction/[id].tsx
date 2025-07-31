@@ -7,10 +7,7 @@ import { Input } from "@/componentes/input";
 import { Button } from "@/componentes/Button";  
 import { CurrencyInput } from "@/componentes/CurrencyInput";
 import { TransactionType } from "@/componentes/TransactionType";
-import { TransactionTypes } from "@/urils/TransactionTypes";
-
-
-    
+import { TransactionTypes } from "@/utils/TransactionTypes";
 
 export default function Transaction(){
 
