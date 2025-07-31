@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Text, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useCallback, useState } from "react";
+import { Alert, Text, View } from "react-native";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 
 import { PageHeader } from "@/componentes/pageHeader";
 import { Input } from "@/componentes/input";
@@ -9,9 +9,12 @@ import { CurrencyInput } from "@/componentes/CurrencyInput";
 import { TransactionType } from "@/componentes/TransactionType";
 import { TransactionTypes } from "@/utils/TransactionTypes";
 
+
 export default function Transaction(){
 
     const [type, setType] = useState (TransactionTypes.Input)
+
+
 
     const params = useLocalSearchParams<{id: string}>()
     return(

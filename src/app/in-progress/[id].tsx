@@ -1,19 +1,18 @@
-import { View, } from "react-native";
+import { useState, useCallback } from "react";
 
-import { PageHeader } from "@/componentes/pageHeader";
-import { Progress } from "@/componentes/Progress";
+import { Alert, View, } from "react-native";
+
 import { List } from "@/componentes/List";
-import { Transaction,TransactionProps } from "@/componentes/Transaction";
 import { Button } from "@/componentes/Button";
+import { Loading } from "@/componentes/Loading";
+import { Progress } from "@/componentes/Progress";
+import { PageHeader } from "@/componentes/pageHeader";
+import { Transaction,TransactionProps } from "@/componentes/Transaction";
 
+import { numeberToCurrent } from "@/utils/numberToCurrent";
 import { TransactionTypes } from "@/utils/TransactionTypes";
-import { router, useLocalSearchParams } from "expo-router";
-
-const details =  {
-    current: "R$ 1.000,00",
-    target: "R$ 5.000,00",
-    porcentage: 20
-}
+import { useTargetDatabase } from "@/database/useTargetDatabase";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 
 const transactions: TransactionProps[] = [
     {
@@ -42,12 +41,51 @@ const transactions: TransactionProps[] = [
 }
 ]
 export default function InProgress(){
+        const [isFetching, setIsFatching ] = useState(true)
+        const [details, useDetails] = useState({
+            name: "",
+            current: "R$ 0,00",
+            target: "R$ 0,00",
+            porcentage: 0
+        }) 
+        const targetDatabase = useTargetDatabase()
+    
+        async function fetchDetails() {
+            try {
+                const response = await targetDatabase.show(Number(params.id))
+                useDetails({
+                    name: response.name,
+                    current: numeberToCurrent(response.current),
+                    target: numeberToCurrent(response.amount),
+                    porcentage: response.percentage
+                })
+                console.log(response)
+            } catch (error) {
+                Alert.alert("Erro", "Não foi possível exibir os detalhes da meta.")
+                console.log(error)
+            }
+        }
+
+        async function fetchData() {
+            const FecthDetailsPromise = fetchDetails()
+        }
+
+    
+            useFocusEffect(
+                useCallback(() => {
+                    fetchDetails()
+                }, [])
+            )
+
+            if(isFetching){
+                return <Loading/>
+            }
     const params = useLocalSearchParams<{id: string}>()
 
     return(
         <View style={{flex:1, padding: 24,  gap: 32}}>
             <PageHeader
-            title="Apple Watch"
+            title={details.name}
             key={1}
             subtitle="Meta em andamento"
             rightButton={{
@@ -59,7 +97,7 @@ export default function InProgress(){
             
             />
         <Progress
-        data={details}
+        data={{current:details.current,porcentage: details.porcentage, target: details.target }}
         />
 
             <List
