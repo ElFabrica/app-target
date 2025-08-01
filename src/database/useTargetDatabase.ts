@@ -4,7 +4,7 @@ export type TargetCreate = {
     name: string,
     amount: number
 }
-export type TaragetResponse ={
+export type TargetResponse ={
     id: number,
     name: string,
     amount: number,
@@ -12,6 +12,9 @@ export type TaragetResponse ={
     percentage: number,
     created_at: Date,
     updated_at: Date
+}
+export type targetUpdate =TargetCreate & {
+     id: number
 }
 
 export function useTargetDatabase(){
@@ -24,7 +27,7 @@ export function useTargetDatabase(){
         })
     }
     function listBySavedValue(){
-        return database.getAllAsync<TaragetResponse>(`
+        return database.getAllAsync<TargetResponse>(`
             SELECT
                 targets.id,
                 targets.name,
@@ -41,13 +44,13 @@ export function useTargetDatabase(){
             `)
     }
     function show(id:number){
-        return database.getFirstAsync<TaragetResponse>(`
+        return database.getFirstAsync<TargetResponse>(`
             SELECT
                 targets.id,
                 targets.name,
                 targets.amount,
-                COALESCE (SUM (transactions.amount), 0) AS current,
-                COALESCE ((SUM (transactions.amount) / targets.amount)*100, 0) AS percentage,
+                COALESCE(SUM(transactions.amount), 0) AS current,
+                COALESCE((SUM(transactions.amount) / targets.amount) * 100, 0) AS percentage,
                 targets.created_at,
                 targets.updated_at
             FROM targets
@@ -55,9 +58,24 @@ export function useTargetDatabase(){
             WHERE targets.id = ${id}
             `)
     }
+    async function update(data: targetUpdate){
+        const statement = await database.prepareAsync(`
+            UPDATE targets SET
+                name = $name,
+                amount = $amount,
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = $id
+            `)  
+            await statement.executeAsync({
+                $id: data.id,
+                $name: data.name,
+                $amount: data.amount
+            })
+    }
     return{
         show,
         create,
+        update,
         listBySavedValue
     }
 }

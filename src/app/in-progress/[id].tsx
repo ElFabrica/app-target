@@ -41,6 +41,7 @@ const transactions: TransactionProps[] = [
 }
 ]
 export default function InProgress(){
+        const params = useLocalSearchParams<{id: string}>()
         const [isFetching, setIsFatching ] = useState(true)
         const [details, useDetails] = useState({
             name: "",
@@ -48,6 +49,8 @@ export default function InProgress(){
             target: "R$ 0,00",
             porcentage: 0
         }) 
+
+
         const targetDatabase = useTargetDatabase()
     
         async function fetchDetails() {
@@ -68,20 +71,23 @@ export default function InProgress(){
 
         async function fetchData() {
             const FecthDetailsPromise = fetchDetails()
+        
+            await Promise.all([FecthDetailsPromise])
+            setIsFatching(false)
         }
+
 
     
             useFocusEffect(
                 useCallback(() => {
-                    fetchDetails()
+                    fetchData()
                 }, [])
             )
 
             if(isFetching){
                 return <Loading/>
             }
-    const params = useLocalSearchParams<{id: string}>()
-
+console.log(params)
     return(
         <View style={{flex:1, padding: 24,  gap: 32}}>
             <PageHeader
@@ -90,7 +96,7 @@ export default function InProgress(){
             subtitle="Meta em andamento"
             rightButton={{
                 icon: "edit",
-                onpress: ()=>{
+                onpress: ()=>{router.navigate(`/target?id=$${params.id}`)
 
                 }
             }}
