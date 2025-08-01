@@ -42,7 +42,7 @@ export default function Target() {
         name,
         amount
       })
-      Alert.alert("Meta", "Meta atualizada com sucesso", [
+      Alert.alert("Sucesso", "Meta atualizada com sucesso", [
         {
           text: "Ok",
           onPress:() => router.back() 
@@ -50,10 +50,12 @@ export default function Target() {
       ])
     } catch (error) {
       Alert.alert("Erro", "Não foi possível atualizar a meta")
+      console.log(error)
       setIsProcessing(false)
     }
   }
   
+
   async function create() {
     try {
       await targetDatabase.create({name, amount})
@@ -81,7 +83,41 @@ export default function Target() {
       console.log(error)
     }
   }
-  
+  function handleRemove(){
+    if( params.id ){
+      return
+    }
+
+    Alert.alert("Remover", "Deseja realmente deletar?"),[
+      
+        {text: "Não", style: "cancelar"},
+        {text: "Sim", onPress: remove()}
+
+      
+    ]
+
+  }
+
+  async function remove(){
+    try {
+        setIsProcessing(true)
+
+        await targetDatabase.remove(Number(params.id))
+        Alert.alert("Meta", "Meta removida",[
+          {text: "Ok", onPress:() => router.replace("/")}
+        ]
+
+
+        )
+
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível remover a meta")
+      console.log(error)
+    }
+  }
+
+
+
   useEffect(()=>{
     if(params.id){
       fetchDetails(Number(params.id))
@@ -90,7 +126,13 @@ export default function Target() {
   
   return (
     <View style={{ flex: 1, padding: 24 }}>
-      <PageHeader title='Meta' subtitle='Economize para alcançar sua meta financeira' />
+      <PageHeader title='Meta' 
+      subtitle='Economize para alcançar sua meta financeira' 
+      rightButton={
+        params.id ? { icon: "delete", onPress: handleRemove } : undefined
+      }
+      />
+
       <View style={{ marginTop: 32, gap: 40 }}>
         <Input
           placeholder='Ex: Viagem para praia, Apple Watch'

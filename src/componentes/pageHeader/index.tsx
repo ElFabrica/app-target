@@ -10,7 +10,7 @@ type Props ={
     title: string
     subtitle?: string
     rightButton?:{
-        onpress: ()=> void
+        onPress: ()=> void
         icon: keyof typeof MaterialIcons.glyphMap
     } 
 }
@@ -24,7 +24,7 @@ return(
             </TouchableOpacity>
         
             {rightButton && (
-                <TouchableOpacity onPress={rightButton.onpress}>
+                <TouchableOpacity onPress={rightButton.onPress}>
                     <MaterialIcons name={rightButton.icon} size={24} color={colors.gray[500]}/>
                 </TouchableOpacity>
             )}
