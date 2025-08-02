@@ -36,7 +36,7 @@ export function useTransactionsDatabase(){
         }
             function listByTargetId(id:number){
                  return database.getAllAsync<TransactionResponse>(`
-                     SELECT id, target_id, amount, created_at, updated_at
+                     SELECT id, target_id,observation, amount, created_at, updated_at
                      FROM transactions
                      WHERE target_id = ${id}
                      ORDER BY created_at DESC

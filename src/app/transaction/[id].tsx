@@ -20,7 +20,7 @@ export default function Transaction(){
     const params = useLocalSearchParams<{id: string}>()
     const transactionDatabase = useTransactionsDatabase()
 
-    async function handleCreate(data) {
+    async function handleCreate() {
         try {
             if(amount <= 0){
                 return Alert.alert("Atenção", "Preencha o valor. A transação tem que ser maior que zero.")
@@ -28,7 +28,7 @@ export default function Transaction(){
             await transactionDatabase.create({
                 target_id: Number(params.id),
                 amount: type === TransactionTypes.Output ? amount * -1 : amount,
-                observation
+                observation: observation
             })
             Alert.alert("Sucesso", "Transação salva com sucesso", [
                 {

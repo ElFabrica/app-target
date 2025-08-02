@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
-
 import { Alert, View, } from "react-native";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import dayjs from "dayjs";
 
 import { List } from "@/componentes/List";
 import { Button } from "@/componentes/Button";
@@ -11,36 +12,12 @@ import { Transaction,TransactionProps } from "@/componentes/Transaction";
 
 import { numeberToCurrent } from "@/utils/numberToCurrent";
 import { TransactionTypes } from "@/utils/TransactionTypes";
+
 import { useTargetDatabase } from "@/database/useTargetDatabase";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useTransactionsDatabase } from "@/database/useTransactionsDatabase";
 
-const transactions: TransactionProps[] = [
-    {
-    id: "1",
-    value: "R$ 300,00",
-    date: "12/04/2025",
-    description: "CDB de 110% do banco XP10",
-    type: TransactionTypes.Output
-
-},
-{
-    id: "2",
-    value: "R$ 300,00",
-    date: "12/04/2025",
-    description: "CDB de 110% do banco XP10",
-    type: TransactionTypes.Input
-
-},
-{
-    id: "3",
-    value: "R$ 300,00",
-    date: "12/04/2025",
-    description: "CDB de 110% do banco XP10",
-    type: TransactionTypes.Output
-
-}
-]
 export default function InProgress(){
+        const [transactions, setTransactions] = useState<TransactionProps[]>([]) 
         const params = useLocalSearchParams<{id: string}>()
         const [isFetching, setIsFatching ] = useState(true)
         const [details, useDetails] = useState({
@@ -52,8 +29,9 @@ export default function InProgress(){
 
 
         const targetDatabase = useTargetDatabase()
+        const transactionsDatabase = useTransactionsDatabase()
     
-        async function fetchDetails() {
+        async function fetchTargetDetails () {
             try {
                 const response = await targetDatabase.show(Number(params.id))
                 useDetails({
@@ -69,18 +47,36 @@ export default function InProgress(){
             }
         }
 
-        async function fetchData() {
-            const FecthDetailsPromise = fetchDetails()
-        
-            await Promise.all([FecthDetailsPromise])
-            setIsFatching(false)
+        async function fetchTransictions() {
+            try {
+                const response = await transactionsDatabase.listByTargetId(
+                    Number(params.id)
+                    )
+                setTransactions(
+                    response.map((item) => ({
+                    id: String(item.id),
+                    value: numeberToCurrent(item.amount),
+                    date: dayjs(item.created_at).format("DD/MM/YYYY [às] HH:MM"),
+                    description: item.observation,
+                    type: item.amount < 0 ?TransactionTypes.Output :  TransactionTypes.Input
+                })
+                    ))
+            } catch (error) {
+                Alert.alert("Erro", "Não foi possível carregar as transações.")
+            }
         }
 
-
-    
+        async function fetchData() {
+            const FecthDetailsPromise = fetchTargetDetails()
+            const FetchTransictionsPromise = fetchTransictions()
+            
+            await Promise.all([FecthDetailsPromise, FetchTransictionsPromise])
+            setIsFatching(false)
+        }
             useFocusEffect(
                 useCallback(() => {
                     fetchData()
+                    
                 }, [])
             )
 
