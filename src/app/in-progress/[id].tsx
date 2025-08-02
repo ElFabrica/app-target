@@ -96,7 +96,7 @@ console.log(params)
             subtitle="Meta em andamento"
             rightButton={{
                 icon: "edit",
-                onpress: ()=>{router.navigate(`/target?id=${params.id}`)
+                onPress: ()=>{router.navigate(`/target?id=${params.id}`)
 
                 }
             }}
