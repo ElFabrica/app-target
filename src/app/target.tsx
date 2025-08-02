@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Alert, View, } from 'react-native'
+import { Alert, StatusBar, View, } from 'react-native'
 import { router, useLocalSearchParams } from 'expo-router'
 
 import { PageHeader } from '@/componentes/pageHeader' 
@@ -84,24 +84,23 @@ export default function Target() {
     }
   }
   function handleRemove(){
-    if( params.id ){
+    if( !params.id ){
       return
     }
 
-    Alert.alert("Remover", "Deseja realmente deletar?"),[
+    Alert.alert("Remover", "Deseja realmente deletar?", [
       
-        {text: "Não", style: "cancelar"},
-        {text: "Sim", onPress: remove()}
+        {text: "Não", style: "cancel"},
+        {text: "Sim", onPress: remove}
 
       
     ]
-
+  )
   }
 
   async function remove(){
     try {
         setIsProcessing(true)
-
         await targetDatabase.remove(Number(params.id))
         Alert.alert("Meta", "Meta removida",[
           {text: "Ok", onPress:() => router.replace("/")}
@@ -126,6 +125,7 @@ export default function Target() {
   
   return (
     <View style={{ flex: 1, padding: 24 }}>
+      <StatusBar barStyle="dark-content"/>
       <PageHeader title='Meta' 
       subtitle='Economize para alcançar sua meta financeira' 
       rightButton={

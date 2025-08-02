@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Alert, View, } from "react-native";
+import { Alert, View, StatusBar } from "react-native";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 
@@ -40,14 +40,14 @@ export default function InProgress(){
                     target: numeberToCurrent(response.amount),
                     porcentage: response.percentage
                 })
-                console.log(response)
+                //console.log(response)
             } catch (error) {
                 Alert.alert("Erro", "Não foi possível exibir os detalhes da meta.")
                 console.log(error)
             }
         }
 
-        async function fetchTransictions() {
+        async function fetchTransactions() {
             try {
                 const response = await transactionsDatabase.listByTargetId(
                     Number(params.id)
@@ -68,11 +68,33 @@ export default function InProgress(){
 
         async function fetchData() {
             const FecthDetailsPromise = fetchTargetDetails()
-            const FetchTransictionsPromise = fetchTransictions()
+            const FetchTransactionsPromise = fetchTransactions()
             
-            await Promise.all([FecthDetailsPromise, FetchTransictionsPromise])
+            await Promise.all([FecthDetailsPromise, FetchTransactionsPromise])
             setIsFatching(false)
         }
+
+        function handlerTransactionRemove(id:string){
+         
+                Alert.alert("Remover", "Deseja realmente remover ?",[
+
+                    {text: "Não", style: "cancel"},
+                    {text: "Sim", onPress:() => transactionRemove(id)}
+
+
+                ])
+          
+            } 
+        async function transactionRemove(id:string) {
+            try {
+                await transactionsDatabase.remove(Number(id))
+                fetchData()
+                Alert.alert("Removido", "Transação removida com sucesso!")
+            } catch (error) {
+                Alert.alert("Erro", "Não foi possível remover a transação.")
+            }
+        }
+
             useFocusEffect(
                 useCallback(() => {
                     fetchData()
@@ -83,9 +105,12 @@ export default function InProgress(){
             if(isFetching){
                 return <Loading/>
             }
-console.log(params)
+            //console.log(params)
     return(
         <View style={{flex:1, padding: 24,  gap: 32}}>
+
+            <StatusBar barStyle="dark-content"/>
+
             <PageHeader
             title={details.name}
             key={1}
@@ -105,7 +130,7 @@ console.log(params)
             <List
             title="Transações"
             data={transactions}
-            renderItem={({item}) => <Transaction data={item} onRemove={()=> {}}/> }
+            renderItem={({item}) => <Transaction data={item} onRemove={()=> handlerTransactionRemove(item.id)}/> }
             emptyMessage ="Nenhuma transação. Toque em uma nova transação para guardar 
             seu primeiro dinheiro aqui "
             />
